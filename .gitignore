@@ -1,0 +1,71 @@
+## .NET / C# Build Artifacts
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+[Aa]rtifacts/
+publish/
+dist/
+
+# Output assemblies & debug symbols (when placed in root or build dirs)
+*.pdb
+*.mdb
+
+## Local Assembly References & Game DLLs (proprietary Valheim / BepInEx binaries)
+libs/
+*.local.props
+*.user.props
+Environment.props
+
+## User-specific / Local Configuration
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+## Visual Studio & JetBrains Rider
+.vs/
+.idea/
+*.DotSettings.user
+_ReSharper*/
+
+## Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+.ionide/
+
+## NuGet
+packages/
+!packages/repositories.config
+*.nupkg
+*.snupkg
+*.nuget.props
+*.nuget.targets
+
+## Logs & Temp Files
+*.log
+*.tmp
+*.temp
+*.swp
+*.bak
+*.dmp
+*.mdmp
+
+## OS Metadata
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
