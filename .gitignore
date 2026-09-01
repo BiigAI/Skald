@@ -10,12 +10,41 @@ dist/
 # Output assemblies & debug symbols (when placed in root or build dirs)
 *.pdb
 *.mdb
+*.dll
+*.exe
+
+## Thunderstore / Packaging Output
+*.zip
+*.7z
+*.rar
+*.tar.gz
+Thunderstore/staging/
+Thunderstore/*.zip
+staging/
+
+## Secrets, Tokens & Environment
+.env
+.env.*
+*.env
+tcli.json
+.tcli/
+*.pfx
+*.snk
+*.p12
+*.key
 
 ## Local Assembly References & Game DLLs (proprietary Valheim / BepInEx binaries)
 libs/
 *.local.props
 *.user.props
 Environment.props
+
+## BepInEx & Game Runtime Testing
+*.cfg
+BepInEx/
+valheim_Data/
+doorstop_config.ini
+DoorstopConfig.ini
 
 ## User-specific / Local Configuration
 *.user
@@ -29,6 +58,9 @@ Environment.props
 .idea/
 *.DotSettings.user
 _ReSharper*/
+*.vsp
+*.vspx
+ipch/
 
 ## Visual Studio Code
 .vscode/*
@@ -39,6 +71,10 @@ _ReSharper*/
 .history/
 .ionide/
 
+## AI Assistants & Tooling
+.claude/
+.cursor/
+
 ## NuGet
 packages/
 !packages/repositories.config
@@ -47,7 +83,7 @@ packages/
 *.nuget.props
 *.nuget.targets
 
-## Logs & Temp Files
+## Logs, Temp & Patch Files
 *.log
 *.tmp
 *.temp
@@ -55,6 +91,9 @@ packages/
 *.bak
 *.dmp
 *.mdmp
+*.orig
+*.rej
+*~
 
 ## OS Metadata
 # macOS

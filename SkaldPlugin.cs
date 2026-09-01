@@ -1,23 +1,20 @@
 using System;
-using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
-using HarmonyLib;
 using Skald.Configuration;
+using Skald.Patches;
 
 namespace Skald
 {
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     public class SkaldPlugin : BaseUnityPlugin
     {
-        public const string PluginGUID = "com.bigai.skald";
-        public const string PluginName = "Skald";
+        public const string PluginGUID = "com.bigai.skald_vikingkillfeed";
+        public const string PluginName = "Skald_VikingKillFeed";
         public const string PluginVersion = "1.0.0";
 
         public static SkaldPlugin Instance { get; private set; } = null!;
         public static ManualLogSource Log { get; private set; } = null!;
-
-        private Harmony? _harmony;
 
         private void Awake()
         {
@@ -33,12 +30,10 @@ namespace Skald
                 // 1. Initialize configuration
                 ModConfig.Initialize(Config);
 
-                // 2. Apply Harmony patches
-                _harmony = new Harmony(PluginGUID);
-                _harmony.PatchAll(Assembly.GetExecutingAssembly());
-
-                Log.LogInfo($"[{PluginName}] All Harmony patches applied successfully.");
                 Log.LogInfo($"[{PluginName}] Server chronicle & Viking killfeed active.");
+
+                // 2. Start the health-poll death detector (server-side, no client mod needed).
+                InvokeRepeating(nameof(PollDeaths), 2f, 1f);
             }
             catch (Exception ex)
             {
@@ -46,9 +41,20 @@ namespace Skald
             }
         }
 
+        private void PollDeaths()
+        {
+            try
+            {
+                PlayerDeathPatch.PollForDeaths();
+            }
+            catch (Exception ex)
+            {
+                Log.LogError($"[{PluginName}] Error during health poll: {ex}");
+            }
+        }
+
         private void OnDestroy()
         {
-            _harmony?.UnpatchSelf();
             Log.LogInfo($"[{PluginName}] Unloaded.");
         }
     }

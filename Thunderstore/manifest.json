@@ -1,0 +1,9 @@
+{
+  "name": "Skald_VikingKillFeed",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/BiigAI/Skald",
+  "description": "Server-side immersive Viking death announcements, killfeed, and chronicle for Valheim.",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2333"
+  ]
+}

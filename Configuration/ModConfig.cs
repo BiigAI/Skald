@@ -8,7 +8,6 @@ namespace Skald.Configuration
     {
         // General
         public static ConfigEntry<bool> EnableDeathAnnouncements { get; private set; } = null!;
-        public static ConfigEntry<bool> EnablePvpAnnouncements { get; private set; } = null!;
         public static ConfigEntry<bool> EnableBossDefeatAnnouncements { get; private set; } = null!;
         public static ConfigEntry<bool> IncludeBiomeInMessage { get; private set; } = null!;
         public static ConfigEntry<bool> LogToConsole { get; private set; } = null!;
@@ -16,13 +15,7 @@ namespace Skald.Configuration
         // Custom template pools
         public static ConfigEntry<string> MonsterDeathMessages { get; private set; } = null!;
         public static ConfigEntry<string> BossDeathMessages { get; private set; } = null!;
-        public static ConfigEntry<string> FallingTreeMessages { get; private set; } = null!;
-        public static ConfigEntry<string> DrowningMessages { get; private set; } = null!;
-        public static ConfigEntry<string> FreezingMessages { get; private set; } = null!;
-        public static ConfigEntry<string> BurningMessages { get; private set; } = null!;
-        public static ConfigEntry<string> PoisonMessages { get; private set; } = null!;
-        public static ConfigEntry<string> FallDamageMessages { get; private set; } = null!;
-        public static ConfigEntry<string> PvpDeathMessages { get; private set; } = null!;
+        public static ConfigEntry<string> OverwhelmedMessages { get; private set; } = null!;
         public static ConfigEntry<string> GenericDeathMessages { get; private set; } = null!;
 
         public static void Initialize(ConfigFile config)
@@ -33,13 +26,6 @@ namespace Skald.Configuration
                 "EnableDeathAnnouncements",
                 true,
                 "Enable in-game global announcements when a player dies."
-            );
-
-            EnablePvpAnnouncements = config.Bind(
-                "1 - General",
-                "EnablePvpAnnouncements",
-                true,
-                "Enable dedicated announcements when a player is killed by another player in PvP."
             );
 
             EnableBossDefeatAnnouncements = config.Bind(
@@ -78,53 +64,11 @@ namespace Skald.Configuration
                 "Message templates for boss deaths. Semicolon-separated. Tokens: {victim}, {killer}, {biome}"
             );
 
-            FallingTreeMessages = config.Bind(
+            OverwhelmedMessages = config.Bind(
                 "2 - Templates",
-                "FallingTreeMessages",
-                "{victim} was crushed by a falling log!;{victim} learned that lumberjacking is the most dangerous trade in Valheim;The wrath of the forest felled {victim} with a falling tree",
-                "Message templates for falling tree deaths. Semicolon-separated. Tokens: {victim}, {killer}, {biome}"
-            );
-
-            DrowningMessages = config.Bind(
-                "2 - Templates",
-                "DrowningMessages",
-                "{victim} ran out of stamina and drowned in the cold waters;The sea claimed {victim} to Ran's watery depths;{victim} sank to the bottom of the {biome} waters",
-                "Message templates for drowning deaths. Semicolon-separated. Tokens: {victim}, {biome}"
-            );
-
-            FreezingMessages = config.Bind(
-                "2 - Templates",
-                "FreezingMessages",
-                "{victim} froze to death in the merciless blizzard of the {biome};The biting cold conquered {victim}'s spirit;{victim} turned into an icy statue in the {biome}",
-                "Message templates for freezing deaths. Semicolon-separated. Tokens: {victim}, {biome}"
-            );
-
-            BurningMessages = config.Bind(
-                "2 - Templates",
-                "BurningMessages",
-                "{victim} burned to ashes in the {biome};The flames consumed {victim};{victim} succumbed to searing fire",
-                "Message templates for fire/burning deaths. Semicolon-separated. Tokens: {victim}, {biome}"
-            );
-
-            PoisonMessages = config.Bind(
-                "2 - Templates",
-                "PoisonMessages",
-                "{victim} succumbed to deadly toxins in the {biome};Vile venom ended {victim}'s journey;{victim}'s veins were filled with lethal poison",
-                "Message templates for poison deaths. Semicolon-separated. Tokens: {victim}, {biome}"
-            );
-
-            FallDamageMessages = config.Bind(
-                "2 - Templates",
-                "FallDamageMessages",
-                "{victim} plummeted to their death from high cliffs;Gravity showed no mercy to {victim};{victim} took a fatal leap in the {biome}",
-                "Message templates for fall damage deaths. Semicolon-separated. Tokens: {victim}, {biome}"
-            );
-
-            PvpDeathMessages = config.Bind(
-                "2 - Templates",
-                "PvpDeathMessages",
-                "{victim} was vanquished by {killer} in glorious combat!;{killer} struck down {victim} with honor;The blade of {killer} claimed the life of {victim}",
-                "Message templates for PvP combat deaths. Semicolon-separated. Tokens: {victim}, {killer}, {biome}"
+                "OverwhelmedMessages",
+                "{victim} was defeated in glorious battle against a horde in the {biome};{victim} fell fighting valiantly against overwhelming odds;{victim} made a last stand against a swarm of enemies and was overwhelmed",
+                "Message templates for deaths surrounded by multiple enemies. Semicolon-separated. Tokens: {victim}, {biome}"
             );
 
             GenericDeathMessages = config.Bind(

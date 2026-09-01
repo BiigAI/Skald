@@ -6,15 +6,9 @@ namespace Skald.Logic
 {
     public enum DeathCategory
     {
-        Pvp,
         Boss,
         Monster,
-        FallingTree,
-        Drowning,
-        Freezing,
-        Burning,
-        Poison,
-        FallDamage,
+        Overwhelmed,
         Generic
     }
 
@@ -47,6 +41,44 @@ namespace Skald.Logic
                     _history.RemoveAt(0);
                 }
             }
+
+            // Sync with ValheimPortal WebApiRouter if active in AppDomain
+            try
+            {
+                foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    string asmName = asm.GetName().Name;
+                    if (asmName == "Bifrostheim" || asmName == "ValheimPortal")
+                    {
+                        var routerType = asm.GetType("ValheimPortal.Systems.Web.WebApiRouter");
+                        var dtoType = asm.GetType("ValheimPortal.Systems.Web.SkaldDeathRecordDto");
+                        if (routerType != null && dtoType != null)
+                        {
+                            var field = routerType.GetField("_skaldChronicle", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+                            if (field != null)
+                            {
+                                var list = field.GetValue(null);
+                                if (list != null)
+                                {
+                                    var dto = Activator.CreateInstance(dtoType);
+                                    dtoType.GetProperty("id")?.SetValue(dto, record.Id, null);
+                                    dtoType.GetProperty("victimName")?.SetValue(dto, record.VictimName, null);
+                                    dtoType.GetProperty("victimSteamId")?.SetValue(dto, record.VictimSteamId, null);
+                                    dtoType.GetProperty("killerName")?.SetValue(dto, record.KillerName, null);
+                                    dtoType.GetProperty("category")?.SetValue(dto, record.Category.ToString(), null);
+                                    dtoType.GetProperty("biome")?.SetValue(dto, record.Biome, null);
+                                    dtoType.GetProperty("formattedMessage")?.SetValue(dto, record.FormattedMessage, null);
+                                    dtoType.GetProperty("timestamp")?.SetValue(dto, record.Timestamp.ToString("yyyy-MM-dd HH:mm:ss"), null);
+
+                                    var insertMethod = list.GetType().GetMethod("Insert");
+                                    insertMethod?.Invoke(list, new object[] { 0, dto });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
         }
 
         public static List<DeathEventRecord> GetRecentDeaths(int count = 50)
